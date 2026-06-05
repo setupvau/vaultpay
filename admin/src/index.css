@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    @apply bg-gray-950 text-gray-100 antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { @apply bg-gray-900; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-700 rounded-full; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-indigo-500 to-violet-600
+           hover:from-indigo-400 hover:to-violet-500
+           text-white font-semibold px-5 py-2.5 rounded-xl
+           transition-all duration-200 disabled:opacity-50
+           disabled:cursor-not-allowed active:scale-95
+           shadow-lg shadow-indigo-900/30;
+  }
+  .input {
+    @apply w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5
+           text-white text-sm placeholder-gray-500 focus:outline-none
+           focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40
+           transition-all;
+  }
+  .card { @apply bg-gray-900 border border-gray-800 rounded-2xl; }
+  .badge-pending   { @apply bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-2.5 py-0.5 rounded-full font-medium; }
+  .badge-approved  { @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-0.5 rounded-full font-medium; }
+  .badge-rejected  { @apply bg-red-500/10 text-red-400 border border-red-500/20 text-xs px-2.5 py-0.5 rounded-full font-medium; }
+  .badge-reviewing { @apply bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs px-2.5 py-0.5 rounded-full font-medium; }
+}
