@@ -345,7 +345,7 @@ export default function DepositPage() {
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400 font-black text-lg">₹</span>
               <input type="number" min="500" step="1" required
                 className="input pl-9 text-xl font-black"
-                placeholder="Minimum ₹500"
+                placeholder="Minimum ₹1000"
                 value={inrAmount}
                 onChange={e => setInrAmount(e.target.value)} />
             </div>

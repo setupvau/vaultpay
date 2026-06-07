@@ -128,7 +128,7 @@ export default function WithdrawPage() {
             {amount && parseFloat(amount) < 500 && parseFloat(amount) > 0 && (
               <p className="text-amber-400 text-xs mt-2 font-medium">⚠️ Minimum withdrawal is ₹500</p>
             )}
-            <p className="text-gray-600 text-xs mt-2">Minimum withdrawal: ₹500</p>
+            <p className="text-gray-600 text-xs mt-2">Minimum withdrawal: ₹1000</p>
           </div>
 
           {/* Method selector */}
