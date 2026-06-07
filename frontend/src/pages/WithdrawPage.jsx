@@ -30,7 +30,7 @@ export default function WithdrawPage() {
     const amt = parseFloat(amount);
     if (!amt || amt <= 0)        return toast.error('Enter a valid amount');
     if (amt > availableINR)      return toast.error('Amount exceeds your INR balance');
-    if (amt < 500)               return toast.error('Minimum withdrawal is ₹500');
+    if (amt < 1000)               return toast.error('Minimum withdrawal is ₹1000');
 
     const payload = { amount: amt, method };
     if (method === 'bank') Object.assign(payload, bank);
