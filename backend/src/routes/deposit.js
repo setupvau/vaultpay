@@ -13,7 +13,23 @@ const upload = multer({
     else cb(new Error('Only JPEG, PNG, WebP images allowed'));
   },
 });
+const { query } = require('../config/database');
 
+// Public — get current USDT rate
+router.get('/usdt-rate', async (req, res, next) => {
+  try {
+    const result = await query(
+      "SELECT key, value FROM settings WHERE key IN ('usdt_rate_inr', 'usdt_bonus_percent')"
+    );
+    const s = {};
+    result.rows.forEach(r => { s[r.key] = r.value; });
+    res.json({
+      success: true,
+      rate: parseFloat(s.usdt_rate_inr || '110'),
+      bonus_percent: parseFloat(s.usdt_bonus_percent || '0'),
+    });
+  } catch (err) { next(err); }
+});
 router.use(authenticate);
 
 // USDT

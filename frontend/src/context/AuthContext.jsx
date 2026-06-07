@@ -13,7 +13,12 @@ const initialState = {
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return { ...state, user: action.payload, isAuthenticated: !!action.payload, isLoading: false };
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: !!action.payload,
+        isLoading: false,
+      };
     case 'LOGOUT':
       return { ...initialState, isLoading: false };
     case 'LOADED':
@@ -26,7 +31,8 @@ const authReducer = (state, action) => {
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Load user on app start
+  // On app start — always fetch full profile from server
+  // This ensures referral_code and all fields are always populated
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (!token) {
@@ -34,8 +40,11 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
+    // Always fetch full profile — never rely on token payload alone
     authAPI.getMe()
-      .then(({ data }) => dispatch({ type: 'SET_USER', payload: data.data }))
+      .then(({ data }) => {
+        dispatch({ type: 'SET_USER', payload: data.data });
+      })
       .catch(() => {
         localStorage.clear();
         dispatch({ type: 'LOGOUT' });
@@ -44,8 +53,19 @@ export const AuthProvider = ({ children }) => {
 
   const login = (user, accessToken, refreshToken) => {
     localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('refresh_token', refreshToken);
+    if (refreshToken) localStorage.setItem('refresh_token', refreshToken);
+
+    // After login, immediately fetch full profile to get referral_code etc.
+    // We set the basic user first for instant UI, then update with full data
     dispatch({ type: 'SET_USER', payload: user });
+
+    authAPI.getMe()
+      .then(({ data }) => {
+        dispatch({ type: 'SET_USER', payload: data.data });
+      })
+      .catch(() => {
+        // If getMe fails, keep the basic user from token — not critical
+      });
   };
 
   const logout = () => {
@@ -53,8 +73,15 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'LOGOUT' });
   };
 
+  // Call this anywhere to refresh user data from server
+  const refreshUser = () => {
+    authAPI.getMe()
+      .then(({ data }) => dispatch({ type: 'SET_USER', payload: data.data }))
+      .catch(() => {});
+  };
+
   return (
-    <AuthContext.Provider value={{ ...state, login, logout }}>
+    <AuthContext.Provider value={{ ...state, login, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -50,7 +50,8 @@ export const walletAPI = {
 };
 
 export const depositAPI = {
-  createUSDT:      (d)  => api.post('/deposit/usdt', d),
+  getUSDTRate:     ()  => api.get('/deposit/usdt-rate'), 
+  createUSDT:      (d) => api.post('/deposit/usdt', d),
   submitUSDTProof: (fd) => api.post('/deposit/usdt/proof', fd, { headers: { 'Content-Type': 'multipart/form-data' } }),
   createINR:       (d)  => api.post('/deposit/inr', d),
   checkINROrder:   (id) => api.get(`/deposit/inr/${id}`),
