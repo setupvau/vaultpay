@@ -47,5 +47,5 @@ cd admin && npm install && npm run dev
 ## Tech Stack
 Backend: Node.js, Express, PostgreSQL, JWT, Cloudinary
 Frontend: React 18, Vite, Tailwind CSS, React Router v6
-Database: Supabase (PostgreSQL, free tier)
-Images: Cloudinary (free tier)
+Database: Supabase 
+Images: Cloudinary 
